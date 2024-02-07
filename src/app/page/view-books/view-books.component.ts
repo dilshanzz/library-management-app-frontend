@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 export class ViewBooksComponent implements OnInit {
   private http;
   public bookList:any = {};
+  public selectedBook:any ;
 
   constructor(private httpClient:HttpClient){
     this.http=httpClient;
@@ -25,5 +26,24 @@ export class ViewBooksComponent implements OnInit {
       this.bookList = data;
       console.log(this.bookList);
     });
+
+    
+  }
+  deleteBook(){
+    let api = "http://localhost:8080/book/"+this.selectedBook.id;
+    this.http.delete(api,{responseType: 'text'}).subscribe((response:String) =>{
+      this.loadBooks();
+      this.selectedBook=null;
+    
+    });
+  }
+  // deleteBook(book : any){
+  //   this.http.delete(`http://localhost:8080/book/${book.id}`).subscribe((data) =>{
+  //   console.log("deleted"+book.id);
+  //   });
+  // }
+
+  setSelectedBook(book:any){
+    this.selectedBook = book;  
   }
 }
